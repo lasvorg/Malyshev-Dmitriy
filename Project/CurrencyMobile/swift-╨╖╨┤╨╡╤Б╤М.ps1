@@ -1,6 +1,4 @@
-// Сборка для проверки на винде.
-
- param([Parameter(ValueFromRemainingArguments = $true)][string[]]$Args)
+param([Parameter(ValueFromRemainingArguments = $true)][string[]]$Args)
 
 $here   = Split-Path -Parent $MyInvocation.MyCommand.Path
 $sdk    = [System.Environment]::GetEnvironmentVariable("SDKROOT", "User")
