@@ -7,10 +7,7 @@ import CurrencyCore
 //  MARK: - Модели хранения
 
 /// Сохранённый курс.
-///
-/// Цена хранится строкой: при переводе в двоичное представление
-/// точная десятичная дробь теряет последний знак. Разбор строки
-/// идёт тем же `CBRParser.number`, что и для ответа ЦБ.
+/// Цена хранится строкой: при переводе в двоичное представление точная десятичная дробь теряет последний знак. Разбор парсится так же как ответ ЦБ.
 @Model
 final class SavedRate {
 
@@ -19,14 +16,12 @@ final class SavedRate {
     var name: String = ""
     var nominal: Int = 1
 
-    /// Цена `nominal` единиц в виде текста.
+    /// Цена условных единиц в виде текста.
     var valueText: String = "0"
 
     var date: Date = Date()
 
-    /// День в формате `18.11.2026` — ключ для поиска.
-    /// Поиск по точному совпадению строки проще и быстрее,
-    /// чем сравнение дат с границами суток.
+    /// День в формате дд.мм.ггг — ключ для поиска.
     var day: String = ""
 
     init(from rate: Rate) {
@@ -87,8 +82,7 @@ actor SwiftDataStore: RateStore, Favourites {
     }
 
     func latest() async -> (date: Date, rates: [Rate])? {
-        //  Одна запись, чтобы узнать дату, и только потом
-        //  выборка дня целиком.
+        //  Одна запись, чтобы узнать дату, и только потом выборка дня целиком.
         var запрос = FetchDescriptor<SavedRate>(
             sortBy: [SortDescriptor(\.date, order: .reverse)])
         запрос.fetchLimit = 1
@@ -106,7 +100,7 @@ actor SwiftDataStore: RateStore, Favourites {
             sortBy: [SortDescriptor(\.date, order: .reverse)])
         guard let всё = try? modelContext.fetch(запрос) else { return }
 
-        //  Список, а не Set: важен порядок по свежести.
+        //  Сортировка по дате добавления
         var дни: [String] = []
         for r in всё where !дни.contains(r.day) {
             дни.append(r.day)
@@ -156,8 +150,7 @@ actor SwiftDataStore: RateStore, Favourites {
 
     //  MARK: Служебное
 
-    /// Ошибка записи (например, кончилось место) не должна ронять
-    /// приложение: данные уже в памяти и могут быть показаны.
+    /// Ошибка записи (например, кончилось место) не крашит приложение т.к. в памяти уже есть записи которые будут показаны
     private func попытатьсяСохранить() {
         do {
             try modelContext.save()
