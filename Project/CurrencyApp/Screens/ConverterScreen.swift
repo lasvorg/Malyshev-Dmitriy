@@ -4,7 +4,6 @@
 //
 //  Расчетов нет. вид только отображает состояние
 //  ConverterModel и передаёт ей ввод.
-//
 
 import SwiftUI
 import CurrencyCore
@@ -65,8 +64,7 @@ struct ConverterScreen: View {
                         .foregroundStyle(Color.primary)
                 }
             } footer: {
-                //  Показываем сам курс: по одному итогу его
-                //  не проверить.
+                //  Показываем сам курс: по одному итогу его не проверить.
                 Text(model.explanation)
             }
 
