@@ -1,8 +1,4 @@
 // swift-tools-version: 5.9
-//
-//  Вся логика приложения вынесена в отдельный пакет: он не зависит
-//  от SwiftUI и собирается с тестами на любой платформе.
-//
 import PackageDescription
 
 let package = Package(
