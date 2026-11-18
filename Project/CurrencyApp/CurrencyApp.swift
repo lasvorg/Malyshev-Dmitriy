@@ -1,8 +1,3 @@
-//  База, источник, библиотека и модели экранов создаются
-//  один раз здесь и раздаются готовыми. Иначе каждый экран
-//  завёл бы себе собственный кэш и ходил в сеть отдельно.
-//
-
 import SwiftUI
 import SwiftData
 import CurrencyCore
@@ -29,16 +24,15 @@ final class Hub {
     let store: RateStore
     let favourites: Favourites
 
-    //  Модели экранов живут столько же, сколько приложение:
-    //  при переключении вкладок состояние не сбрасывается.
+
+    //  Состояние вкладок не сбрасывается при переходе на другую.
     let rates: RatesModel
     let converter: ConverterModel
     let favouritesModel: FavouritesModel
     let settings: SettingsModel
 
     init() {
-        //  Если база не открылась — работаем на памяти.
-        //  Приложение без сохранения лучше, чем не запустившееся.
+        //  Если база не откроется, то будет работа по памяти.
         let хранилище: RateStore & Favourites
         if let контейнер = try? ModelContainer(
             for: SavedRate.self, SavedFavourite.self) {
