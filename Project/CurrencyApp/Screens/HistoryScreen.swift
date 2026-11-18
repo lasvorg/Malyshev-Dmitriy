@@ -10,8 +10,7 @@ struct HistoryScreen: View {
     let rate: Rate
     let library: RateLibrary
 
-    /// Создаётся при появлении экрана: модели нужна валюта,
-    /// известная только здесь.
+    /// Создаётся при появлении экрана: модели нужна валюта, известная только здесь.
     @State private var model: HistoryModel?
 
     var body: some View {
@@ -45,8 +44,7 @@ struct HistoryScreen: View {
                 .font(.headline)
                 .monospacedDigit()
             if rate.nominal != 1 {
-                //  Иначе цифры на графике не сойдутся с курсом
-                //  на сайте ЦБ, который указан за номинал.
+                //  Иначе цифры на графике не сойдутся с курсомна са йте ЦБ, который указан за номинал.
                 Text("Курс ЦБ указан за \(rate.nominal) единиц")
                     .font(.caption)
                     .foregroundStyle(Color.secondary)
@@ -55,8 +53,7 @@ struct HistoryScreen: View {
     }
 
     private func выборСрока(_ model: HistoryModel) -> some View {
-        //  Связь собрана вручную: смена периода должна не только
-        //  запомнить выбор, но и перезагрузить данные.
+        //  Связь собрана вручную: смена периода должна И запомнить выбор И перезагрузить данные.
         Picker("Период", selection: Binding(
             get: { model.period },
             set: { new in Task { await model.choose(new) } }
@@ -174,7 +171,7 @@ struct График: View {
         for (номер, точка) in точки.enumerated() {
             let x = ширина * CGFloat(точка.x)
             let y = высота * CGFloat(1 - точка.y)
-            //  Поля сверху и снизу, чтобы линия не липла к краям.
+            //  Поля сверху и снизу, чтобы линия не прилипла к краям.
             let сжатое = y * 0.9 + высота * 0.05
             let место = CGPoint(x: x, y: сжатое)
 
